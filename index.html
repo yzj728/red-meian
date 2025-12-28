@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红色梅庵 · 团二大历史数字展厅</title>
+    <style>
+        /* ===== 全局样式 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #B22222 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ===== 导航栏 ===== */
+        nav {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav li {
+            margin: 0 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #FFD700;
+        }
+
+        /* ===== 主容器 ===== */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ===== 头部横幅 ===== */
+        .hero {
+            position: relative;
+            height: 400px;
+            background: url('images/梅庵整体.webp') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(139, 0, 0, 0.7), rgba(220, 20, 60, 0.5));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+        }
+
+        /* ===== 内容区块 ===== */
+        section {
+            padding: 3rem 2rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            color: #8B0000;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #DC143C;
+            margin: 0.5rem auto;
+        }
+
+        /* ===== 时间轴 ===== */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #DC143C;
+        }
+
+        .timeline-item {
+            margin-bottom: 2rem;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            background: #8B0000;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #DC143C;
+        }
+
+        .timeline-item h3 {
+            color: #8B0000;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== 故事卡片 ===== */
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .story-card {
+            background: #FFF8DC;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 5px solid #DC143C;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .story-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== 数字文物画廊 ===== */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item p {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* ===== 团队信息 ===== */
+        .team {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .member {
+            text-align: center;
+            background: #F5F5DC;
+            padding: 1.5rem;
+            border-radius: 10px;
+            width: 200px;
+        }
+
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #DC143C;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* ===== 页脚 ===== */
+        footer {
+            background: #2C2C2C;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .qr-code {
+            margin-top: 1rem;
+        }
+
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            section {
+                padding: 2rem 1rem;
+            }
+        }
+
+        /* ===== 平滑滚动 ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <ul>
+            <li><a href="#hero">首页</a></li>
+            <li><a href="#history">历史脉络</a></li>
+            <li><a href="#stories">梅庵故事</a></li>
+            <li><a href="#gallery">数字文物</a></li>
+            <li><a href="#team">实践团队</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主容器 -->
+    <div class="container" id="hero">
+        <!-- 头部横幅 -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1>红色梅庵</h1>
+                <p>永远跟党走的青春起点 · 团二大历史数字展厅</p>
+            </div>
+        </div>
+
+        <!-- 历史脉络 -->
+        <section id="history">
+            <h2>团二大历史脉络</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>1923年8月20日</h3>
+                    <p>中国社会主义青年团第二次全国代表大会在南京东南大学梅庵开幕。来自全国15个地方团的30余名代表出席会议，代表了全国6000多名团员。</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>1923年8月25日</h3>
+                    <p>大会通过了《关于本团与中国共产党关系的决议》等17个决议案，首次明确提出了"永远跟党走"的政治原则，为共青团发展指明了方向。</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>1923-2023</h3>
+                    <p>百年沧桑，梅庵见证了共青团"坚定不移跟党走，为党和人民奋斗"的初心使命，成为东大红色基因的重要载体。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 梅庵故事 -->
+        <section id="stories">
+            <h2>梅庵红色故事</h2>
+            <div class="stories-grid">
+                <div class="story-card">
+                    <img src="images/梅庵整体.webp" alt="会议桌">
+                    <h3>一张会议桌的见证</h3>
+                    <p>梅庵中央的这张老式会议桌，百年前承载过团二大的激烈讨论。桌面上的斑驳痕迹，是青春与理想碰撞的印记。据校史馆老师介绍，这张桌子是当年唯一留存至今的实物...</p>
+                </div>
+                <div class="story-card">
+                    <img src="images/梅庵整体.webp" alt="代表">
+                    <h3>青年代表的赤诚之心</h3>
+                    <p>当时最年轻的代表仅19岁，他们白天在梅庵开会，晚上就挤在附近的学生宿舍。经费紧张，大家就啃馒头、喝白开水，却讨论着民族复兴的大计...</p>
+                </div>
+                <div class="story-card">
+                    <img src="images/梅庵整体.webp" alt="梅庵建筑">
+                    <h3>梅庵建筑的前世今生</h3>
+                    <p>梅庵始建于1914年，为纪念两江师范校长李瑞清（号梅庵）而建。1923年，这座典雅的建筑因团二大而载入史册。如今，它静静矗立四牌楼校区...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 数字文物画廊 -->
+        <section id="gallery">
+            <h2>数字文物展厅</h2>
+            <p style="text-align: center; color: #666;">点击可放大查看高清图片</p>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="images/梅庵整体.webp" alt="梅庵正门">
+                    <p>梅庵正门全貌</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/梅庵整体.webp" alt="会议场景">
+                    <p>团二大会议场景复原</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/梅庵整体.webp" alt="文献">
+                    <p>珍贵历史文献资料</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/梅庵整体.webp" alt="团徽">
+                    <p>早期团徽团旗展示</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 团队信息 -->
+        <section id="team">
+            <h2>实践团队</h2>
+            <div class="team">
+                <div class="member">
+                    <div class="member-avatar">队</div>
+                    <h3>队长</h3>
+                    <p>统筹协调</p>
+                </div>
+                <div class="member">
+                    <div class="member-avatar">研</div>
+                    <h3>研究员</h3>
+                    <p>历史梳理</p>
+                </div>
+                <div class="member">
+                    <div class="member-avatar">摄</div>
+                    <h3>摄影师</h3>
+                    <p>实地拍摄</p>
+                </div>
+                <div class="member">
+                    <div class="member-avatar">技</div>
+                    <h3>技术员</h3>
+                    <p>网页制作</p>
+                </div>
+                <div class="member">
+                    <div class="member-avatar">宣</div>
+                    <h3>宣传员</h3>
+                    <p>传播推广</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>东南大学2026年寒假社会实践 · 计软智学院</p>
+        <p>指导教师：XXX老师</p>
+        <div class="qr-code">
+            <p>扫码访问数字展厅</p>
+            <img src="https://via.placeholder.com/150x150/000000/FFFFFF?text=H5二维码" alt="二维码">
+        </div>
+        <p style="margin-top: 1rem;">&copy; 2026 红色梅庵实践团</p>
+    </footer>
+
+    <script>
+        // 简单的图片点击放大效果（可选）
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.addEventListener('click', function() {
+                const viewer = window.open('', '_blank', 'width=800,height=600');
+                viewer.document.write(`<img src="${this.src}" style="max-width:100%;max-height:100vh;">`);
+            });
+        });
+
+        // 导航栏高亮当前章节（可选）
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.color = link.getAttribute('href') === `#${current}` ? '#FFD700' : 'white';
+            });
+        });
+    </script>
+</body>
+</html>
